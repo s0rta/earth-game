@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    #main {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .nodes {
+      fill: steelblue;
+      stroke-width: 1;
+      stroke: white;
+    }
+
+    .line-feeding {
+      stroke: green;
+    }
+
+    .line-es {
+      stroke: blue;
+    }
+
+    .main {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+    }
+
+    .hover {
+      fill: greenyellow;
+    }
+  </style>
+</head>
+
+<body>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <div class="main">
+    <div class="sidebar">
+      <h1>Level <span id="level"></span></h1>
+      <p>Total Biomass: <span class="total-biomass"></span></p>
+      <button onclick="levelDown()">Down</button>
+      <button onclick="levelUp()">Up</button>
+      <h2 class="name">Name</h2>
+      <p class="id">ID</p>
+      <p class="biomass">Biomass</p>
+    </div>
+    <div id="map">
+      <svg id="svg"></svg>
+    </div>
+  </div>
+  <script src="./js/lists.js"></script>
+  <script src="./js/game.js"></script>
+</body>
+
+</html>
