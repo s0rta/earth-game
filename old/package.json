@@ -1,0 +1,14 @@
+{
+  "name": "@s0rta/game-proof-of-concept",
+  "main": "0c69c17f6283a99b@406.js",
+  "version": "406.0.0",
+  "homepage": "https://observablehq.com/@s0rta/game-proof-of-concept",
+  "author": {
+    "name": "JT Wright",
+    "url": "https://observablehq.com/@s0rta"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "@observablehq/runtime": "4"
+  }
+}

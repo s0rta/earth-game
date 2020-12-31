@@ -1,0 +1,34 @@
+.link {
+    stroke: #000;
+    stroke-width: 1.5px;
+}
+
+.link-es {
+    stroke: #00F;
+    stroke-width: 1.5px;
+}
+
+.link-feeding {
+    stroke: #0F0;
+    stroke-width: 1.5px;
+}
+
+.node {
+    cursor: move;
+    fill: #ccc;
+    stroke: #000;
+    stroke-width: 1.5px;
+}
+
+.node.fixed {
+    fill: #f00;
+}
+
+.wrapper {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+
+.hover {
+    fill: #0f0;
+}

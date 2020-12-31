@@ -1,0 +1,116 @@
+SpeciesID,WorkingName,OrganismalGroup,all.biomass
+5,Salt Grass,vascular plant,475.33333
+6,epipellic flora,microphytobenthos,296.72
+7,Alkali Heath,vascular plant,900
+8,Fleshy Jaumea,vascular plant,4488.6667
+9,California Sea Lavender,vascular plant,120.66667
+10,macroalgae,macroalgae,256.49524
+11,Shore Grass,vascular plant,1272
+12,phytoplankton,vascular plant,1527.7309
+16,Pickleweed,vascular plant,38428.267
+21,foraminiferan,protist,0.1433138
+25,Capitella capitata,annelid,2.6102455
+35,oligochaete,annelid,4.150018008
+44,Polydora nuchalis,annelid,1.6343817
+47,leech(glossiphonid),leech,NA
+50,Carcinonemertes sp.,nemertean,6.143874555
+51,Carinoma mutabilis,nemertean,0.1062877
+53,nemertean,nemertean,0.0245069
+61,California Softshell Clam,bivalve,0.0001898
+64,Bent-nosed Clam,bivalve,0.0080906
+65,White Sand Macoma,bivalve,210.72214
+66,Blue Mussel,bivalve,0.000352
+67,California Mahogany Clam,bivalve,45.118247
+68,Pacific Littleneck Clam,bivalve,569.15303
+70,Butter Clam,bivalve,151.8597
+71,Fat Jackknife Clam,bivalve,0.0005142
+72,California Jackknife Clam,bivalve,257.61279
+73,Lesser Tagelus,bivalve,317.06629
+75,Acteocina inculta,snail,2.2624235
+76,California Assiminea,snail,6.2561136
+79,California Horn Snail,snail,143.83576
+82,Salt Marsh Snail,snail,85.015283
+86,Black Salt Marsh Mosquito,mosquito,3.519108023
+87,Argulus,branchiuran,5.642390964
+89,corophiid?,amphipod,6.0595817
+90,Western Encephalitis Mosquito,mosquito,3.625295867
+92,cyclopoid copepod,copepod,0.0246359
+93,dipteran b,dipteran,0.0389175
+94,Ephydra,dipteran,2.948143
+99,green gammaridean,amphipod,0.0696413
+100,harpacticoid,copepod,0.1384038
+102,oniscidean,isopod,1.4327233
+104,ostracod-planktonic,ostracod,0.1182526
+106,Pardosa sp.,spider,1.5349126
+109,Salt Marsh Hopper,amphipod,3.3067643
+110,Salt Marsh Water Boatman,water boatman,0.726149
+111,Calfornia Ghost Shrimp,burrowing shrimp,7.1600804
+112,Southern Mud Shrimp,burrowing shrimp,8.277904
+113,Green Shore Crab,crab,0.1412562
+114,Striped Shore Crab,crab,175.59909
+115,Fiddler Crab,crab,0.2141502
+116,Yellow-fin Goby,fish,0.4240099
+118,Topsmelt,fish,4.5752376
+119,Arrow Goby,fish,0.6982437
+120,Shiner Surfperch,fish,0.0449312
+121,California Killifish,fish,1.6540096
+122,Long-jawed Mudsucker,fish,0.7728177
+125,Diamond Turbot,fish,0.2618094
+127,Staghorn Sculpin,fish,10.415117
+132,California Halibut,fish,0.1536856
+139,Leopard Shark,elasmobranch,0.0863925
+140,Haller's Round Ray,elasmobranch,0.0284862
+141,American Avocet,bird,0.0151609
+143,American Coot,bird,0.0922059
+144,American Crow,bird,0.0013822
+145,American Wigeon,bird,0.0674677
+146,Black-bellied Plover,bird,0.0063977
+147,Black-crowned Night Heron,bird,0.0300871
+148,Belted Kingfisher,bird,0.0036769
+151,Bonaparte's Gull,bird,0.0007309
+154,Bufflehead,bird,0.0915692
+155,Blue-winged Teal,bird,0.0516353
+157,California Gull,bird,0.249866575
+158,Caspian Tern,bird,0.0036287
+159,Cinnamon Teal,bird,0.0149052
+161,Cooper's Hawk,bird,0.002242
+163,Double-crested Cormorant,bird,0.0124805
+164,Dunlin,bird,0.0090074
+168,Great Blue Heron,bird,0.2673797
+169,Great Egret,bird,0.0701152
+170,Green Heron,bird,0.0075045
+172,Greater Yellowlegs,bird,0.0396191
+173,Green-winged Teal,bird,0.1386956
+174,Killdeer,bird,0.0062451
+175,Long-billed Curlew,bird,0.0835354
+176,Long-billed Dowitcher,bird,0.0553906
+177,Little Blue Heron,bird,0.0035291
+178,Least Sandpiper,bird,0.0356641
+181,Marbled Godwit,bird,0.1057894
+182,Mallard,bird,0.4704502
+183,Mew Gull,bird,0.273488671
+187,Pied-billed Grebe,bird,0.0198625
+189,Ring-billed Gull,bird,0.0064582
+190,Red-breasted Merganser,bird,0.0518401
+194,Ruddy Duck,bird,0.0019375
+197,Semipalmated Plover,bird,0.0070175
+198,Snowy Egret,bird,0.0758358
+201,Spotted Sandpiper,bird,0.0003662
+202,Surf Scoter,bird,0.0026295
+204,Turkey Vulture,bird,0.0470025
+205,Western Grebe,bird,0.0218222
+207,Western Sandpiper,bird,0.0001507
+208,Whimbrel,bird,0.0192895
+209,Willet,bird,0.7094073
+210,Raccoon,mammal,0.9857072
+211,copepod-thalassinidean,copepod,6.720049779
+212,Salt Marsh Bird's Beak,vascular plant,95.2
+213,Dodder,vascular plant,120.07843
+350,,Wave Attenuation,45684.9337
+450,,Shoreline Stabilization,47509.3846
+550,,Carbon Sequestration,49779.82555
+650,,Water Filtration,47789.69028
+750,,CommFishery,0.9714345
+850,,Birdwatching,0.369631471
+950,,Waterfowl Hunting,0.8204547
+1050,,RecFishery,584.6903931
