@@ -197,14 +197,18 @@ function add(l) {
 
 function handleMouseOver(d, i) {
     d3.select(this).attr("class", "hover");
-    d3.select("h2.name").text(d.nodeName)
-    d3.select("p.id").text(d.speciesID)
-    d3.select("p.biomass").text(d.biomass)
+    d3.select("span.name-filler").text(d.nodeName)
+    d3.select("span.type-filler").text(d.speciesID)
+    d3.select("span.biomass-filler").text(d.biomass)
+    d3.select("span.trophic-filler").text(d.trophicLevel)
+    d3.select("p.desc").text(d.desc)
 }
 
 function handleMouseOut(d, i) {
     d3.select(this).classed("hover", false);
-    d3.select("h2.name").text("name")
-    d3.select("p.id").text("ID")
-    d3.select("p.biomass").text("biomass")
+    d3.select("span.name-filler").text("")
+    d3.select("span.type-filler").text("")
+    d3.select("span.biomass-filler").text("")
+    d3.select("span.trophic-filler").text("")
+    d3.select("p.desc").text("")
 }
