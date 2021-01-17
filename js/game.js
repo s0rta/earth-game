@@ -74,7 +74,8 @@ var nodes = g_nodes.selectAll(".nodes")
     .data(nodesArray)
     .enter().append("path")
     .attr("d", d3.symbol().size(300).type((d) => {
-        let transformed = d.groupName.toLowerCase().split("-").join(" ")
+        console.log(d)
+        let transformed = d.nodeName.toLowerCase().split("-").join(" ")
         let test = es.includes(transformed) ? d3.symbolCircle : d3.symbolSquare
         return test
     }))
@@ -95,7 +96,7 @@ function reDraw() {
     nodes = update_nodes.enter()
         .append("path")
         .attr("d", d3.symbol().size(300).type((d) => {
-            let transformed = d.groupName.toLowerCase().split("-").join(" ")
+            let transformed = d.nodeName.toLowerCase().split("-").join(" ")
             let test = es.includes(transformed) ? d3.symbolCircle : d3.symbolSquare
             return test
         })).on("mouseover", handleMouseOver).on("mouseout", handleMouseOut).on("click", remove)
@@ -196,7 +197,7 @@ function add(l) {
 
 function handleMouseOver(d, i) {
     d3.select(this).attr("class", "hover");
-    d3.select("h2.name").text(d.groupName)
+    d3.select("h2.name").text(d.nodeName)
     d3.select("p.id").text(d.speciesID)
     d3.select("p.biomass").text(d.biomass)
 }
