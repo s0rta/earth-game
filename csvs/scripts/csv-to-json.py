@@ -12,7 +12,7 @@ with open('csvs/new/G7-nodes.csv') as csvfile:
             biomass = 0
             trophicLevel = 0
             try:
-                biomass = float(row[2])
+                biomass = float(row[1])
             except:
                 biomass = -1
             
@@ -21,7 +21,7 @@ with open('csvs/new/G7-nodes.csv') as csvfile:
             except:
                 trophicLevel = -1
 
-            nodeJSON.append({"index": i, "speciesID": int(row[1]), "biomass": biomass, "organismType": row[3], "nodeColor": row[4], "nodeShape": row[5], "nodeName": row[6], "trophicLevel": trophicLevel, "desc": row[8], "imgFile": row[9], "imgCaption": row[10], "imgSource": row[11], "imgLiscence": row[12]})
+            nodeJSON.append({"index": i, "speciesID": int(row[0]), "biomass": biomass, "organismType": row[2], "nodeColor": row[3], "nodeShape": row[4], "nodeName": row[5], "trophicLevel": trophicLevel, "desc": row[8], "imgFile": row[9], "imgCaption": row[10], "imgSource": row[11], "imgLiscence": row[12]})
             i+=1
 
 print(json.dumps(nodeJSON))
