@@ -27,7 +27,7 @@ let edgeLists = [edgeList1, edgeList2, edgeList3, edgeList4, edgeList5, edgeList
 const es = ["", "wave attenuation", "shoreline stabilization", "carbon sequestration", "water filtration", "commfishery", "birdwatching", "waterfowl hunting", "recfishery", "recreational fishery", "commercial fishery", "carbon storage"]
 
 
-let svg = d3.select("svg"),
+let svg = d3.select("#svgMain"),
     w = 1000,
     h = 750
     n = 50,
@@ -114,8 +114,9 @@ function reDraw() {
 }
 
 function findBiomass(d, i) {
+    console.log(d)
     let b = 0
-    d3.selectAll("path").data().map(n => {
+    g_nodes.selectAll("path").data().map(n => {
         b += n.biomass
         return n.biomass
     })
@@ -125,6 +126,7 @@ function findBiomass(d, i) {
 
 function ticked() {
     biomass = findBiomass()
+    // biomass = 0
     d3.select(".total-biomass").html(biomass)
     nodes.attr("transform", function (d) {
         return "translate(" + d.x + "," + d.y + ")";
@@ -214,3 +216,46 @@ function handleMouseOut(d, i) {
     d3.select("p.desc").text("")
     d3.select("img.photo").attr("src", "")
 }
+
+/* PLOT MAIN CODE */
+
+let plotData = [{x: 1, y: 0}, {x:2, y:10}]
+
+const plotMargin = {top: 10, right: 30, bottom: 30, left: 60},
+    plotWidth = 460 - plotMargin.left - plotMargin.right,
+    plotHeight = 400 - plotMargin.top - plotMargin.bottom;
+
+ // append the svg object to the body of the page
+let plotSvg = d3.select("#plots")
+.append("svg")
+  .attr("width", plotWidth + plotMargin.left + plotMargin.right)
+  .attr("height", plotHeight + plotMargin.top + plotMargin.bottom)
+.append("g")
+  .attr("transform",
+        "translate(" + plotMargin.left + "," + plotMargin.top + ")");   
+
+let plotX = d3.scaleLinear()
+    .domain([1,2])
+    .range([0, plotWidth]);
+
+plotSvg.append("g")
+    .attr("transform", "translate(0," + plotHeight + ")")
+    .call(d3.axisBottom(plotX));
+
+let plotY = d3.scaleLinear()
+    .domain([0,13])
+    .range([plotHeight,0])
+
+plotSvg.append("g")
+    .call(d3.axisLeft(plotY));
+
+plotSvg
+    .append("path")
+    .datum(plotData)
+    .attr("fill", "none")
+    .attr("stroke", "steelblue")
+    .attr("stroke-width", 1.5)
+    .attr("d", d3.line()
+        .x(d => plotX(d.x))
+        .y(d => plotY(d.y))
+    )
