@@ -74,7 +74,6 @@ var nodes = g_nodes.selectAll(".nodes")
     .data(nodesArray)
     .enter().append("path")
     .attr("d", d3.symbol().size(300).type((d) => {
-        console.log(d)
         let transformed = d.nodeName.toLowerCase().split("-").join(" ")
         let test = es.includes(transformed) ? d3.symbolCircle : d3.symbolSquare
         return test
@@ -87,7 +86,6 @@ function reDraw() {
 
     svg.selectAll("path").remove();
     svg.selectAll("line").remove();
-    console.log(nodesArray)
     var update_nodes = g_nodes.selectAll("path")
         .data(nodesArray);
 
@@ -114,7 +112,6 @@ function reDraw() {
 }
 
 function findBiomass(d, i) {
-    console.log(d)
     let b = 0
     g_nodes.selectAll("path").data().map(n => {
         b += n.biomass
@@ -164,7 +161,12 @@ function remove(n, i) {
     simulation.force("link", d3.forceLink(linksArray).distance(distance).strength(strength))
     simulation.alpha(0.5);
     simulation.restart();
+
     reDraw();
+    
+    plotLife++
+    plotData.push({x:plotLife, y: findBiomass()})
+    drawPlot();
 }
 
 function levelDown() {
@@ -186,8 +188,6 @@ function levelUp() {
 function add(l) {
     linksArray = [...edgeLists[l - 1]];
     nodesArray = [...nodeLists[l - 1]];
-
-    console.log(nodesArray)
     
     simulation.nodes(nodeLists[l - 1]);
     simulation.force("link", d3.forceLink(linksArray).distance(distance).strength(strength))
@@ -219,7 +219,10 @@ function handleMouseOut(d, i) {
 
 /* PLOT MAIN CODE */
 
-let plotData = [{x: 1, y: 0}, {x:2, y:10}]
+let plotData = [{x: 1, y: findBiomass()}, {x: 2, y: findBiomass()}]
+let plotLife = 2
+
+const plotTop = findBiomass()
 
 const plotMargin = {top: 10, right: 30, bottom: 30, left: 60},
     plotWidth = 460 - plotMargin.left - plotMargin.right,
@@ -234,22 +237,35 @@ let plotSvg = d3.select("#plots")
   .attr("transform",
         "translate(" + plotMargin.left + "," + plotMargin.top + ")");   
 
-let plotX = d3.scaleLinear()
-    .domain([1,2])
+
+
+
+
+drawPlot()
+
+function drawPlot() {
+
+    plotSvg.selectAll("g").remove()
+    plotSvg.selectAll("path").remove()
+
+    console.log(plotData)
+
+    let plotX = d3.scaleLinear()
+    .domain([1,plotLife])
     .range([0, plotWidth]);
 
-plotSvg.append("g")
+    let plotY = d3.scaleLinear()
+    .domain([0,plotTop])
+    .range([plotHeight,0])
+
+    plotSvg.append("g")
     .attr("transform", "translate(0," + plotHeight + ")")
     .call(d3.axisBottom(plotX));
 
-let plotY = d3.scaleLinear()
-    .domain([0,13])
-    .range([plotHeight,0])
+    plotSvg.append("g")
+        .call(d3.axisLeft(plotY));
 
-plotSvg.append("g")
-    .call(d3.axisLeft(plotY));
-
-plotSvg
+    plotSvg
     .append("path")
     .datum(plotData)
     .attr("fill", "none")
@@ -259,3 +275,4 @@ plotSvg
         .x(d => plotX(d.x))
         .y(d => plotY(d.y))
     )
+}
