@@ -34,6 +34,10 @@
     .hover {
       fill: greenyellow;
     }
+
+    .photo {
+      width:300px;
+    }
   </style>
 </head>
 
@@ -45,12 +49,13 @@
       <p>Total Biomass: <span class="total-biomass"></span></p>
       <button onclick="levelDown()">Down</button>
       <button onclick="levelUp()">Up</button>
+      <img class="photo" src="" alt="">
       <h2 class="name">Name: <span class="name-filler"></span></h2>
       <p class="biomass">Biomass: <span class="biomass-filler"></span></p>
       <p class="type">Type: <span class="type-filler"></span></p>
       <p class="trophic">Trophic Level: <span class="trophic-filler"></span></p>
       <p class="desc"></p>
-      
+
     </div>
     <div id="map">
       <svg id="svg"></svg>

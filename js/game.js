@@ -201,6 +201,7 @@ function handleMouseOver(d, i) {
     d3.select("span.type-filler").text(d.speciesID)
     d3.select("span.biomass-filler").text(d.biomass)
     d3.select("span.trophic-filler").text(d.trophicLevel)
+    d3.select("img.photo").attr("src", "img/Images/" + d.imgFile)
     d3.select("p.desc").text(d.desc)
 }
 
@@ -211,4 +212,5 @@ function handleMouseOut(d, i) {
     d3.select("span.biomass-filler").text("")
     d3.select("span.trophic-filler").text("")
     d3.select("p.desc").text("")
+    d3.select("img.photo").attr("src", "")
 }
