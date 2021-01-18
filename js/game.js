@@ -113,18 +113,25 @@ function reDraw() {
 
 function findBiomass(d, i) {
     let b = 0
-    g_nodes.selectAll("path").data().map(n => {
-        b += n.biomass
-        return n.biomass
+
+    let esID = 2
+
+    const biomassLinks = g_links.selectAll("line").data().filter(l => {
+        return l.Type === "ES" ? l.source.index === esID : false
     })
 
+    console.log(biomassLinks)
+
+    biomassLinks.map(n => {
+        
+        b += n.target.biomass == -1 ? 0 : n.target.biomass
+        return n.target.biomass
+    })
+    
     return b
 }
 
 function ticked() {
-    biomass = findBiomass()
-    // biomass = 0
-    d3.select(".total-biomass").html(biomass)
     nodes.attr("transform", function (d) {
         return "translate(" + d.x + "," + d.y + ")";
     });
@@ -243,9 +250,6 @@ let plotSvg = d3.select("#plots")
 .append("g")
   .attr("transform",
         "translate(" + plotMargin.left + "," + plotMargin.top + ")");   
-
-
-
 
 
 drawPlot()
