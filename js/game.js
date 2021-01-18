@@ -174,7 +174,11 @@ function levelDown() {
         level--
         add(level)
         document.getElementById("level").innerHTML = level;
+        plotData = [{x: 1, y: findBiomass()}, {x: 2, y: findBiomass()}]
+        plotLife = 2
+        drawPlot();
     }
+    
 }
 
 function levelUp() {
@@ -182,6 +186,9 @@ function levelUp() {
         level++
         add(level)
         document.getElementById("level").innerHTML = level;
+        plotData = [{x: 1, y: findBiomass()}, {x: 2, y: findBiomass()}]
+        plotLife = 2
+        drawPlot();
     }
 }
 
