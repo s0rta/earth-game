@@ -23,6 +23,7 @@ document.getElementById("level").innerHTML = level;
 
 let nodeLists = [nodeList1, nodeList2, nodeList3, nodeList4, nodeList5, nodeList6, nodeList7];
 let edgeLists = [edgeList1, edgeList2, edgeList3, edgeList4, edgeList5, edgeList6, edgeList7];
+let colorArr = [...colors]
 
 const es = ["", "wave attenuation", "shoreline protection", "shoreline stabilization", "carbon sequestration", "water filtration", "commfishery", "birdwatching", "waterfowl hunting", "recfishery", "recreational fishery", "commercial fishery", "carbon storage"]
 
@@ -76,13 +77,20 @@ var nodes = g_nodes.selectAll(".nodes")
     .enter().append("path")
     .attr("d", d3.symbol().size(300).type((d) => {
         let transformed = d.nodeName.toLowerCase().split("-").join(" ")
-        let test = es.includes(transformed) ? d3.symbolCircle : d3.symbolSquare
+        let test = es.includes(transformed) ? d3.symbolSquare : d3.symbolCircle
         return test
     }))
+    .attr("fill", d => {
+        let color = colors.find(c => {
+            return c.name == d.nodeColor
+        })
+        return color ? color.hex : "#00f"
+    })
     .on("mouseover", handleMouseOver).on("mouseout", handleMouseOut).on("click", remove).on("contextmenu", function (d, i) {
         d3.event.preventDefault();
+        simulation.stop()
         createSubSim(d)
-    });;
+    });
 
 rect.on("click", add, true)
 
@@ -90,8 +98,18 @@ function createSubSim(mainNode) {
     let subSvg = d3.select("#svgSub"),
     w = 500,
     h = 250,
-    nodesArray = nodeLists[level - 1],
-    linksArray = edgeLists[level - 1]
+    simpleNodes = [],
+    linksArray = edgeLists[level - 1].filter(l => {
+        if(l.source.speciesID === mainNode.speciesID || l.target.speciesID === mainNode.speciesID) {
+            simpleNodes.push(l.source.speciesID)
+            simpleNodes.push(l.target.speciesID)
+            return true
+        }
+        return false 
+    }),
+    nodesArray = nodeLists[level - 1].filter(l => {
+        return simpleNodes.includes(l.speciesID)
+    })
 
     subSvg.attr('width', w)
         .attr('height', h)
@@ -133,11 +151,17 @@ function createSubSim(mainNode) {
     let nodes = g_nodes.selectAll(".nodes")
         .data(nodesArray)
         .enter().append("path")
+        .attr("fill", d => {
+            let color = colors.find(c => {
+                return c.name == d.nodeColor
+            })
+            return color ? color.hex : "#00f"
+        })
         .attr("d", d3.symbol().size(300).type((d) => {
             let transformed = d.nodeName.toLowerCase().split("-").join(" ")
-            let test = es.includes(transformed) ? d3.symbolCircle : d3.symbolSquare
+            let test = es.includes(transformed) ? d3.symbolSquare : d3.symbolCircle
             return test
-        }))
+        })).on("mouseover", handleMouseOver).on("mouseout", handleMouseOut)
         
         function ticked() {
             nodes.attr("transform", function (d) {
@@ -172,9 +196,20 @@ function reDraw() {
         .append("path")
         .attr("d", d3.symbol().size(300).type((d) => {
             let transformed = d.nodeName.toLowerCase().split("-").join(" ")
-            let test = es.includes(transformed) ? d3.symbolCircle : d3.symbolSquare
+            let test = es.includes(transformed) ? d3.symbolSquare : d3.symbolCircle
             return test
-        })).on("mouseover", handleMouseOver).on("mouseout", handleMouseOut).on("click", remove)
+        }))
+        .attr("fill", d => {
+            let color = colors.find(c => {
+                return c.name == d.nodeColor
+            })
+            return color ? color.hex : "#00f"
+        })
+        .on("mouseover", handleMouseOver).on("mouseout", handleMouseOut).on("click", remove).on("contextmenu", function (d, i) {
+            d3.event.preventDefault();
+            simulation.stop()
+            createSubSim(d)
+        })
         .merge(update_nodes);
 
     var update_links = g_links.selectAll("line")
