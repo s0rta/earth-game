@@ -1,0 +1,117 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>d3-foodweb</title>
+  <meta name="description" content="Examples for d3-foodweb">
+  <meta name="author" content="Kelly Kearney">
+	<link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/pure-min.css">
+	
+	<style>
+	body {
+		background-color: white;
+		margin: 50px;
+		text-align: left;
+		font-family: Tahoma, Geneva, sans-serif;
+	}
+	p {
+		margin-bottom: 20px;
+		width: 600px;
+	}
+	
+	.d3-tip {
+	  line-height: 1;
+	  padding: 12px;
+	  background: rgba(0, 0, 0, 0.8);
+	  color: #fff;
+	  border-radius: 5px;
+	  pointer-events: none;
+		font-size: 8pt;
+		font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	}
+	
+
+	.d3-tip:after {
+	  box-sizing: border-box;
+	  display: inline;
+	  font-size: 10px;
+	  width: 100%;
+	  line-height: 1;
+	  color: rgba(0, 0, 0, 0.8);
+	  position: absolute;
+	  pointer-events: none;
+	}
+	
+	.d3-tip.n:after {
+	  content: "\25BC";
+	  margin: -1px 0 0 0;
+	  top: 100%;
+	  left: 0;
+	  text-align: center;
+	}
+	
+	</style>
+	
+
+</head>
+
+<body>
+	<h2>d3-foodweb Example</h2>
+	<h3>The Generic_37 Ecopath food web</h3>
+		
+	<p>The d3.foodweblayout function can be used to position nodes.  
+	Nodes are draggable by the user.  The default color scheme categorizes 
+	nodes as consumer (blue), producer (green), detrital (red), or fishing 
+	fleet (purple).</p>
+ 
+	<div id="div1"></div>
+
+	<p>To display a food web after node positions (and edge paths) have been 
+	calculated, use d3.foodwebstatic.  The default color scheme is the same 
+	as described above, with edges inheriting the color of their source node.</p>
+
+	<div id="div2"></div>
+	
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+	<script src="../../d3-foodweb.js"></script>
+	<script>
+
+	d3.json("gen37.json", function(data) {
+		d3.select("#div1")
+			.datum(data)
+		.call(d3.foodweblayout()
+			.paddingLeft(50)
+			.paddingTop(10)
+			.paddingRight(10)
+			.paddingBottom(60)
+			.totwidth(600)
+			.totheight(600)
+			.strengthxcenter(0.03)
+			.rlim( [10,20])
+			.blim( [NaN,NaN])
+		);
+	});
+	
+	d3.json("gen37.json", function(data) {
+		d3.select("#div2")
+			.datum(data)
+		.call(d3.foodwebstatic()
+			.paddingLeft(50)
+			.paddingTop(10)
+			.paddingRight(10)
+			.paddingBottom(60)
+			.totwidth(600)
+			.totheight(600)
+			.tllim([1,5])
+			.rlim( [1,50])
+			.blim( [NaN,NaN])
+			.lwmax(50)
+		);
+	});
+	
+	
+	</script>
+</body>
+</html>

@@ -18,11 +18,11 @@
     }
 
     .line-feeding {
-      stroke: green;
+      stroke: grey;
     }
 
     .line-es {
-      stroke: blue;
+      stroke: black;
     }
 
     .main {
@@ -36,6 +36,70 @@
 
     .photo {
       width:300px;
+    }
+
+    .legend-elm-wrap {
+      display:flex;
+      justify-content: space-between;
+      width: 250px;
+      margin-top: 5px;
+    }
+
+    .legend-elm {
+      width:20px;
+      height:20px;
+    }
+
+    .mammel {
+      background-color: #db6d00;
+    }
+
+    .micro-org {
+      background-color: black;
+    }
+
+    .crustacean {
+      background-color: #009292;
+    }
+
+    .eco-serve {
+      background-color: #ff6db6;
+    }
+
+    .plant {
+      background-color: #24ff24;
+    }
+
+    .bird {
+      background-color: #920000;
+    }
+
+    .insect {
+      background-color: #490092;
+    }
+
+    .fish {
+      background-color: #006ddb;
+    }
+
+    .plankton {
+      background-color: #ffff6d;
+    }
+
+    .mollusc {
+      background-color: #004949;
+    }
+
+    .si {
+      margin-top: 9px;
+      height: 2px;
+      background-color: grey;
+    }
+
+    .ssi {
+      margin-top: 9px;
+      height: 2px;
+      background-color: black;
     }
   </style>
 </head>
@@ -58,13 +122,35 @@
     </div>
     <div id="map">
       <svg id="svgMain">
-        <defs><marker id="arrowhead" viewBox="-0 -5 10 10" refX="55" refY="0" orient="auto-start-reverse" markerWidth="13" markerHeight="13" xoverflow="visible"><path d="M 0,-5 L 10 ,0 L 0,5" fill="#999" style="stroke: none;"></path></marker></defs>
+        <defs><marker id="arrowhead" viewBox="-0 -5 10 10" refX="-15" refY="0" orient="auto" markerWidth="13" markerHeight="13" xoverflow="visible"><path d="M 0,-5 L 10 ,0 L 0,5" fill="#999" style="stroke: none;"></path></marker></defs>
       </svg>
     </div>
     <div id="sub">
       <svg id="svgSub">
-        <defs><marker id="arrowhead" viewBox="-0 -5 10 10" refX="55" refY="0" orient="auto-start-reverse" markerWidth="13" markerHeight="13" xoverflow="visible"><path d="M 0,-5 L 10 ,0 L 0,5" fill="#999" style="stroke: none;"></path></marker></defs>
+        <defs><marker id="arrowhead" viewBox="-0 -5 10 10" refX="-15" refY="0" orient="auto" markerWidth="13" markerHeight="13" xoverflow="visible"><path d="M 0,-5 L 10 ,0 L 0,5" fill="#999" style="stroke: none;"></path></marker></defs>
       </svg>
+      <div class="toggles">
+        <input type="checkbox" id="trophic-toggle" name="trophic-diagram-main"
+           onclick="toggleTrophic();">
+    <label for="trophic-diagram-main">Trophic Diagram Main</label>
+    <input type="checkbox" id="sub-trophic-toggle" name="trophic-diagram-sub"
+           onclick="trophicToggleSub();">
+    <label for="trophic-diagram-sub">Trophic Diagram Sub</label>
+      </div>
+      <div class="legend">
+          <div class="legend-elm-wrap">Species Interaction <div class="si legend-elm"></div></div>
+          <div class="legend-elm-wrap">Service Specie Interaction<div class="ssi legend-elm"></div></div>
+          <div class="legend-elm-wrap">Ecosystem Service <div class="eco-serve legend-elm"></div></div>
+          <div class="legend-elm-wrap">Mammel <div class="mammel legend-elm"></div></div>
+          <div class="legend-elm-wrap">Microscopic Organism <div class="micro-org legend-elm"></div></div>
+          <div class="legend-elm-wrap">Crustacean <div class="crustacean legend-elm"></div></div>
+          <div class="legend-elm-wrap">Plant <div class="plant legend-elm"></div></div>
+          <div class="legend-elm-wrap">Bird <div class="bird legend-elm"></div></div>
+          <div class="legend-elm-wrap">Insect, Annelid & Arachnid <div class="insect legend-elm"></div></div>
+          <div class="legend-elm-wrap">Fish <div class="fish legend-elm"></div></div>
+          <div class="legend-elm-wrap">Plankton <div class="plankton legend-elm"></div></div>
+          <div class="legend-elm-wrap">Mollusc <div class="mollusc legend-elm"></div></div>
+        </div>
     </div>
     <div id="plots">
       <p class="waterfowl-hunting">Waterfowl Hunting Biomass</p>

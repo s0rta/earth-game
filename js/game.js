@@ -16,17 +16,43 @@ Array.prototype.delete = function (arr) {
 
 let level = 1
 let biomass = 0
-let distance = 200
+let distance = 100
 let strength = 0.5
+let trophicToggle = false;
+var dispatch = d3.dispatch("toggle-main", "toggle-sub", "toggled-sub");
+
+function toggleTrophic() {
+    dispatch.call("toggle-main");
+    if (d3.select("#trophic-toggle").property("checked")) {
+        simulation.force("trophic", d3.forceY().strength(10).y(function (d) {
+            return tl2y(d.trophicLevel);
+        }))
+    } else {
+        simulation.force("trophic", d3.forceY().strength(0).y(function (d) {
+            return tl2y(d.trophicLevel);
+        }))
+    }
+    simulation.alpha(0.1).restart();
+
+}
+
+function trophicToggleSub() {
+    dispatch.call("toggle-sub")
+}
+
+var tl2y = d3.scaleLinear()
+    .domain([0.5, 7])
+    .range([740, 10]);
+
+var tl2ySub = d3.scaleLinear()
+    .domain([0.5, 7])
+    .range([240, 10]);
 
 document.getElementById("level").innerHTML = level;
 
 let nodeLists = [nodeList1, nodeList2, nodeList3, nodeList4, nodeList5, nodeList6, nodeList7];
 let edgeLists = [edgeList1, edgeList2, edgeList3, edgeList4, edgeList5, edgeList6, edgeList7];
 let colorArr = [...colors]
-
-const es = ["", "wave attenuation", "shoreline protection", "shoreline stabilization", "carbon sequestration", "water filtration", "commfishery", "birdwatching", "waterfowl hunting", "recfishery", "recreational fishery", "commercial fishery", "carbon storage"]
-
 
 let svg = d3.select("#svgMain"),
     w = 1000,
@@ -38,12 +64,14 @@ svg.attr('width', w)
     .attr('height', h)
 
 var simulation = d3.forceSimulation(nodesArray)
-    .force("charge", d3.forceManyBody().strength(-200))
-    .force("link", d3.forceLink(linksArray).distance(distance))
+    .force("charge", d3.forceManyBody().strength(-1000))
+    .force("link", d3.forceLink(linksArray).strength(1).distance(distance))
     .force("center", d3.forceCenter(w / 2, h / 2))
     .force("x", d3.forceX(w / 2))
     .force("y", d3.forceY(h / 2))
     .on("tick", ticked);
+
+dispatch.on("toggled-sub", () => simulation.stop())
 var rect = svg.append("rect")
     .attr("x", 0)
     .attr("y", 0)
@@ -76,8 +104,7 @@ var nodes = g_nodes.selectAll(".nodes")
     .data(nodesArray)
     .enter().append("path")
     .attr("d", d3.symbol().size(300).type((d) => {
-        let transformed = d.nodeName.toLowerCase().split("-").join(" ")
-        let test = es.includes(transformed) ? d3.symbolSquare : d3.symbolCircle
+        let test = isES(d.nodeName) ? d3.symbolSquare : d3.symbolCircle
         return test
     }))
     .attr("fill", d => {
@@ -94,22 +121,40 @@ var nodes = g_nodes.selectAll(".nodes")
 
 rect.on("click", add, true)
 
+function toggleTrophicSub(sim) {
+    dispatch.call("toggled-sub");
+    if (d3.select("#sub-trophic-toggle").property("checked")) {
+        sim.force("trophic", d3.forceY().strength(5).y(function (d) {
+            return tl2ySub(d.trophicLevel);
+        }))
+    } else {
+        sim.force("trophic", d3.forceY().strength(0).y(function (d) {
+            return tl2ySub(d.trophicLevel);
+        }))
+    }
+    sim.alpha(0.1).restart();
+
+}
+
 function createSubSim(mainNode) {
+
+    
+
     let subSvg = d3.select("#svgSub"),
-    w = 500,
-    h = 250,
-    simpleNodes = [],
-    linksArray = edgeLists[level - 1].filter(l => {
-        if(l.source.speciesID === mainNode.speciesID || l.target.speciesID === mainNode.speciesID) {
-            simpleNodes.push(l.source.speciesID)
-            simpleNodes.push(l.target.speciesID)
-            return true
-        }
-        return false 
-    }),
-    nodesArray = nodeLists[level - 1].filter(l => {
-        return simpleNodes.includes(l.speciesID)
-    })
+        w = 500,
+        h = 250,
+        simpleNodes = [],
+        linksArray = edgeLists[level - 1].filter(l => {
+            if (l.source.speciesID === mainNode.speciesID || l.target.speciesID === mainNode.speciesID) {
+                simpleNodes.push(l.source.speciesID)
+                simpleNodes.push(l.target.speciesID)
+                return true
+            }
+            return false
+        }),
+        nodesArray = nodeLists[level - 1].filter(l => {
+            return simpleNodes.includes(l.speciesID)
+        })
 
     subSvg.attr('width', w)
         .attr('height', h)
@@ -120,6 +165,9 @@ function createSubSim(mainNode) {
         .force("x", d3.forceX(w / 2))
         .force("y", d3.forceY(h / 2))
         .on("tick", ticked);
+
+    dispatch.on("toggle-main", () => simulation.stop())
+    dispatch.on("toggle-sub", () => toggleTrophicSub(simulation))
     let rect = subSvg.append("rect")
         .attr("x", 0)
         .attr("y", 0)
@@ -158,29 +206,36 @@ function createSubSim(mainNode) {
             return color ? color.hex : "#00f"
         })
         .attr("d", d3.symbol().size(300).type((d) => {
-            let transformed = d.nodeName.toLowerCase().split("-").join(" ")
-            let test = es.includes(transformed) ? d3.symbolSquare : d3.symbolCircle
+            let test = isES(d.nodeName) ? d3.symbolSquare : d3.symbolCircle
             return test
         })).on("mouseover", handleMouseOver).on("mouseout", handleMouseOut)
-        
-        function ticked() {
-            nodes.attr("transform", function (d) {
-                return "translate(" + d.x + "," + d.y + ")";
-            });
-            links = g_links.selectAll("line")
-                .attr("x2", (d) => {
-                    return d.source.x;
-                })
-                .attr("y2", (d) => {
-                    return d.source.y;
-                })
-                .attr("x1", (d) => {
-                    return d.target.x;
-                })
-                .attr("y1", (d) => {
-                    return d.target.y;
-                })
-        }
+
+    function ticked() {
+        nodes.attr("transform", function (d) {
+            return "translate(" + d.x + "," + d.y + ")";
+        });
+        links = g_links.selectAll("line")
+            .attr("x2", (d) => {
+                return d.source.x;
+            })
+            .attr("y2", (d) => {
+                return d.source.y;
+            })
+            .attr("x1", (d) => {
+                return d.target.x;
+            })
+            .attr("y1", (d) => {
+                return d.target.y;
+            })
+    }
+
+    
+}
+
+function isES(name) {
+    const es = ["", "wave attenuation", "shoreline protection", "shoreline stabilization", "carbon sequestration", "water filtration", "commfishery", "birdwatching", "waterfowl hunting", "recfishery", "recreational fishery", "commercial fishery", "carbon storage"]
+    let transformed = name.toLowerCase().split("-").join(" ")
+    return es.includes(transformed);
 }
 
 function reDraw() {
@@ -195,8 +250,7 @@ function reDraw() {
     nodes = update_nodes.enter()
         .append("path")
         .attr("d", d3.symbol().size(300).type((d) => {
-            let transformed = d.nodeName.toLowerCase().split("-").join(" ")
-            let test = es.includes(transformed) ? d3.symbolSquare : d3.symbolCircle
+            let test = isES(d.nodeName) ? d3.symbolSquare : d3.symbolCircle
             return test
         }))
         .attr("fill", d => {
@@ -274,6 +328,7 @@ function remove(n, i) {
 
     simulation.nodes(nodesArray);
     simulation.force("link", d3.forceLink(linksArray).distance(distance).strength(strength))
+
     simulation.alpha(0.5);
     simulation.restart();
 
@@ -291,13 +346,13 @@ function levelDown() {
         add(level)
         document.getElementById("level").innerHTML = level;
         plotData = [{
-            x: 1,
+            x: 0,
             y: findBiomass()
         }, {
-            x: 2,
+            x: 1,
             y: findBiomass()
         }]
-        plotLife = 2
+        plotLife = 1
         plotStarts.forEach(obj => {
             obj.data = []
             drawPlot(obj)
@@ -312,13 +367,13 @@ function levelUp() {
         add(level)
         document.getElementById("level").innerHTML = level;
         plotData = [{
-            x: 1,
+            x: 0,
             y: findBiomass()
         }, {
-            x: 2,
+            x: 1,
             y: findBiomass()
         }]
-        plotLife = 2
+        plotLife = 1
         plotStarts.forEach(obj => {
             obj.data = []
             drawPlot(obj)
@@ -342,7 +397,7 @@ function handleMouseOver(d, i) {
     d3.select(this).attr("class", "hover");
     d3.select("span.name-filler").text(d.nodeName)
     d3.select("span.type-filler").text(d.organismType)
-    d3.select("span.biomass-filler").text(d.biomass)
+    d3.select("span.biomass-filler").text(isES(d.nodeName) ? "N/A" : d.biomass)
     d3.select("span.trophic-filler").text(d.trophicLevel)
     d3.select("img.photo").attr("src", "img/Images/" + d.imgFile)
     d3.select("p.desc").text(d.desc)
@@ -359,7 +414,7 @@ function handleMouseOut(d, i) {
 }
 
 /* PLOT MAIN CODE */
-let plotLife = 2
+let plotLife = 1
 
 const plotMargin = {
         top: 10,
@@ -437,7 +492,7 @@ function drawPlot(plot) {
             "translate(" + plotMargin.left + "," + plotMargin.top + ")");
 
     let plotX = d3.scaleLinear()
-        .domain([1, plotLife])
+        .domain([0, plotLife])
         .range([0, plotWidth]);
 
     let plotY = d3.scaleLinear()
