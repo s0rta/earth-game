@@ -21,6 +21,9 @@ let strength = 0.5
 let trophicToggle = false;
 var dispatch = d3.dispatch("toggle-main", "toggle-sub", "toggled-sub");
 
+let subNode;
+let subLvl = 1;
+
 function toggleTrophic() {
     dispatch.call("toggle-main");
     if (d3.select("#trophic-toggle").property("checked")) {
@@ -38,6 +41,14 @@ function toggleTrophic() {
 
 function trophicToggleSub() {
     dispatch.call("toggle-sub")
+}
+
+function toggleMoreSub() {
+    createSubSim(subNode, ++subLvl)
+}
+
+function toggleLessSub() {
+    createSubSim(subNode, --subLvl)
 }
 
 var tl2y = d3.scaleLinear()
@@ -116,7 +127,9 @@ var nodes = g_nodes.selectAll(".nodes")
     .on("mouseover", handleMouseOver).on("mouseout", handleMouseOut).on("click", remove).on("contextmenu", function (d, i) {
         d3.event.preventDefault();
         simulation.stop()
-        createSubSim(d)
+        subNode = d;
+        subLvl = 1;
+        createSubSim(d, 1)
     });
 
 rect.on("click", add, true)
@@ -136,21 +149,34 @@ function toggleTrophicSub(sim) {
 
 }
 
-function createSubSim(mainNode) {
+function findSubLinks(node, n) {
+    let arr = [];
 
-    
+    edgeLists[level - 1].filter(l => {
+        if (l.source.speciesID === node.speciesID || l.target.speciesID === node.speciesID) {
+            arr.push(l)
+            if(n > 1) {
+                arr.push(...findSubLinks(l.source, --n))
+                arr.push(...findSubLinks(l.target, --n))
+            }
+            return true
+        }
+        return false
+    })
 
+    return arr
+}
+
+function createSubSim(mainNode, n) {
+    console.log(n)
     let subSvg = d3.select("#svgSub"),
         w = 500,
         h = 250,
         simpleNodes = [],
-        linksArray = edgeLists[level - 1].filter(l => {
-            if (l.source.speciesID === mainNode.speciesID || l.target.speciesID === mainNode.speciesID) {
-                simpleNodes.push(l.source.speciesID)
-                simpleNodes.push(l.target.speciesID)
-                return true
-            }
-            return false
+        linksArray = findSubLinks(mainNode, n).map(e => {
+            simpleNodes.push(e.source.speciesID)
+            simpleNodes.push(e.target.speciesID)
+            return e;
         }),
         nodesArray = nodeLists[level - 1].filter(l => {
             return simpleNodes.includes(l.speciesID)
